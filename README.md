@@ -14,4 +14,4 @@ Backend: External API
 
 
 Live site:
-https://mdb1710.github.io/bookmarks-app-sarah-michael/
+https://mdb1710.github.io/bookmarks-app-final/
