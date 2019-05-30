@@ -129,9 +129,11 @@ const bookmarks = (function() {
     <p><button class="expand-button" type="button">Expand</button>
     <button class="delete-button" type="button">Delete</button></p><br>
     <h3>Title: ${bookmark.title} <br>
-    Rating: ${bookmark.rating} <br>
-    Description: ${bookmark.desc}<br>
-    URL: <a href="https://${bookmark.url}">Visit Site</a></h3>
+    Rating: ${bookmark.rating} <br></h3>
+    <section class="extra">
+    <h4>Description: ${bookmark.desc}<br>
+    URL: <a href="https://${bookmark.url}">Visit Site</a></h4>
+    </section>
      </li>`;
     }
   }
@@ -248,7 +250,7 @@ const bookmarks = (function() {
       event.preventDefault();            
       console.log('expand button works');
       toggleHiddenDescription(id);
-      
+      renderBookmarkList();
       console.log(STORE.hideDescription);
     });
   }
