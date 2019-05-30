@@ -100,7 +100,7 @@ form{
 
 .error {
     display: block;
-    color: red;
+    color: whitesmoke;
     font-size: 2em;
     background-color: rgba(223, 104, 104, 0.596);
     text-align: center;

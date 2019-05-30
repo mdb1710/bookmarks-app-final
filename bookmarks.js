@@ -2,7 +2,7 @@
 
 'use strict';
 
-const bookmarks = (function(){
+const bookmarks = (function() {
   function renderBookmarkForm(){
     const form = `
             <form>
@@ -12,17 +12,18 @@ const bookmarks = (function(){
                 <input type="text" name="Bookmark name" class='name-entry' id="bookmark-title" required><br />
         
                 <label for="bookmark-url">URL</label>
-                <input type="text" name="URL for bookmark" class='URL-entry' id="bookmark-url" required><br />
+                <input type="url" name="URL for bookmark" class='URL-entry' id="bookmark-url" required><br />
                 
                 <label for="bookmark-description">Description</label>
                 <input type="text" name="Description" class='description-entry' id="bookmark-description" required><br>
                    
-                    
+                    <div class="star-power">
                     <p><input type="radio" name="stars" value="5" id="5-stars"><label for="5-stars"> 5 stars</label></p>
                     <p><input type="radio" name="stars" value="4" id="4-stars"><label for="4-stars"> 4 stars</label></p>
                     <p><input type="radio" name="stars" value="3" id="3-stars"><label for="3-stars"> 3 stars</label></p>
                     <p><input type="radio" name="stars" value="2" id="2-stars"><label for="2-stars"> 2 stars</label></p>
                     <p><input type="radio" name="stars" value="1" id="1-stars"><label for="1-stars"> 1 star </label></p>
+                    </div>
                     <button type="reset" class="clear-button">Clear</button>
                   <button type="submit" class="js-bookmark-submit">Submit</button>
               </fieldset>    
@@ -35,43 +36,84 @@ const bookmarks = (function(){
     }
     
   }
+  // });
 
-  function captureBookmark(){
+  function captureBookmark() {
     $('.new-bookmark-form').on('submit','form',function(event) {
       event.preventDefault();
+      
+      
       console.log('add bookmark done');
       let bookmarkTitle = $('.name-entry').val();
       let urlTitle = $('.URL-entry').val();
       let description = $('.description-entry').val();
-      console.log(event.currentTarget.stars);
+      
       let ratingNumber= event.currentTarget.stars.value;
-      console.log(bookmarkTitle, urlTitle, description, ratingNumber);
-                      
-      let displayedBookmarks={
-        title: bookmarkTitle,
-        url: urlTitle,
-        desc: description,
-        rating: ratingNumber,
-        hiddenDescrip: true
-      };   
-      $('.error').on('click', () =>{
+      if(!ratingNumber){
+        $('.error').text('You must select a rating');
         $('.error').toggleClass('hidden');
-      });
-      api.createBookmark(displayedBookmarks)
-      //.then(res => res.json())
-        .then(data => {
-          console.log(data);
-          STORE.bookmarkList.push(data);
-          console.log(displayedBookmarks);
-          renderBookmarkList();
-                
-        }).catch(err => {
-          $('.error').text(err.message);
+        event.preventDefault();
+      } else if (!urlTitle){
+        $('.error').text('Please type a valid url');
+        $('.error').toggleClass('hidden');
+        event.preventDefault();
+      } else {
+        $('.error').hide();
+       
+        console.log(bookmarkTitle, urlTitle, description, ratingNumber);
+                      
+        let displayedBookmarks={
+          title: bookmarkTitle,
+          url: urlTitle,
+          desc: description,
+          rating: ratingNumber,
+          hiddenDescription: true
+        };   
+        $('.error').on('click', () =>{
           $('.error').toggleClass('hidden');
         });
+        api.createBookmark(displayedBookmarks)
+        //.then(res => res.json())
+          .then(data => {
+            console.log(data);
+            STORE.bookmarkList.push(data);
+            console.log(displayedBookmarks);
+            renderBookmarkList();
+                
+          })
+          .catch(err => {
+            $('.error').text(err.message);
+            $('.error').toggleClass('hidden');
+          });
+      }
+    } 
         
-    }); }
-              
+    );}
+
+      
+      
+  // function renderBookmark (bookmark) {
+  //   return `<li class='new-bookmark' id="${bookmark.id}">
+  //   <p><button class="expand-button" type="button">Expand</button>
+  //   <button class="delete-button" type="button">Delete</button></p><br>
+  //   <h3>Title: ${bookmark.title} <br>
+  //   Rating: ${bookmark.rating} <br>
+  //   </h3>
+  //   <h4>Click here to see more</h4>
+  //   <button id="click" type="button">Click</button>
+  //   <section class="extra" style="display: none">
+  //   <span>Description: ${bookmark.desc}</span><br>
+  //   <span>URL: <a href="https://${bookmark.url}">Visit Site</a></span>
+  //   </section>
+  //    </li>`;
+  // }
+
+  function testClick() {
+    $('#click').on('click',  function() {
+      console.log('clicked');
+      $('h4').toggle();
+    });
+  }
 
 
   function renderBookmark(bookmark){
@@ -121,7 +163,7 @@ const bookmarks = (function(){
               
     $('.js-bookmark-list').html(displayList);
 
-    expandBookmark();
+    newExpandBookmark();
     handleDeleteBookmark();
   }
         
@@ -137,22 +179,24 @@ const bookmarks = (function(){
   }
         
         
-  function expandBookmark() {
-  //This function will show full description and url of bookmark when clicked.
-    //render();
-    //will remove the hidden class from description and URL
-    $('li').on('click', '.expand-button', function(event){
-      const id =  $(event.currentTarget).closest('li').attr('id');
-      console.log(id);
-      event.preventDefault();            
-      console.log('expand button works');
-      toggleHiddenDescription(id);
-      renderBookmarkList();
-      console.log(STORE.hideDescription);
+  // function expandBookmark() {
+  //   //This function will show full description and url of bookmark when clicked.
+  //   //render();
+  //   //will remove the hidden class from description and URL
+  //   $('li').on('click', '.expand-button', function(event){
+  //     const id =  $(event.currentTarget).closest('li').attr('id');
+  //     console.log(id);
+  //     event.preventDefault();            
+  //     console.log('expand button works');
+  //     toggleHiddenDescription(id);
+  //     renderBookmarkList();
+  //     console.log(STORE.hideDescription);
                 
-    });
+  //   });
+
+
         
-  }
+  // }
         
   function toggleHiddenDescription(){
     STORE.hideDescription = !STORE.hideDescription;
@@ -161,7 +205,6 @@ const bookmarks = (function(){
       $('#full-description').addClass('.hidden');
       console.log('remove class works');
     }
-            
   }
         
         
@@ -173,12 +216,43 @@ const bookmarks = (function(){
       console.log(id);
    
       api.deleteItem(id)
-      //.then(res => res.json())
+        //.then(res => res.json())
         .then(data => {
           STORE.bookmarkList = STORE.bookmarkList.filter((bookmark)=> bookmark.id !== id);
           renderBookmarkList();});
     });
   }
+
+  function newExpandBookmark(){
+    // $('.new-bookmark').on('click', '.expand-button', function(event){
+    //   event.preventDefault(); 
+    //   const element = $(event.currentTarget).closest('li');
+    //   console.log(element);
+    //   $('span').parent('.extra').toggle('slow');
+    //   // let id =  element.attr('id');
+    //   // let fullBookmark = STORE.bookmarkList.find(element => element.id === id);
+    //   // // console.log(fullBookmark);
+    //   // fullBookmark.hiddenDescription = !fullBookmark.hiddenDescription;
+    //   // if (fullBookmark.hiddenDescription === false){
+    //   //   fullBookmark.find('span').removeClass('hidden');
+    //   // }
+    //   // console.log(fullBookmark.hiddenDescription);
+    //   // console.log(id);
+                 
+    //   console.log('expand button works');
+    //   toggleHiddenDescription();
+    //   renderBookmarkList();
+    $('li').on('click', '.expand-button', function(event){
+      const id =  $(event.currentTarget).closest('li').attr('id');
+      console.log(id);
+      event.preventDefault();            
+      console.log('expand button works');
+      toggleHiddenDescription(id);
+      
+      console.log(STORE.hideDescription);
+    });
+  }
+      
         
   function render() {
     //This function will save to our store and server and generates bookmark page.
@@ -190,8 +264,10 @@ const bookmarks = (function(){
     handleDeleteBookmark();
     handleAddBookmarkClick();
     handleFilter();
-    expandBookmark();
+    // expandBookmark();
     captureBookmark();
+    newExpandBookmark();
+    testClick();
   }
 
   return{
@@ -201,8 +277,8 @@ const bookmarks = (function(){
     renderBookmarkList,
     bindEventListeners,
     toggleHiddenDescription,
+    
     render,
   };
 
-}());
-
+})();
