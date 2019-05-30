@@ -73,7 +73,7 @@ const bookmarks = (function() {
           $('.error').toggleClass('hidden');
         });
         api.createBookmark(displayedBookmarks)
-        //.then(res => res.json())
+        
           .then(data => {
             console.log(data);
             STORE.bookmarkList.push(data);
@@ -92,21 +92,7 @@ const bookmarks = (function() {
 
       
       
-  // function renderBookmark (bookmark) {
-  //   return `<li class='new-bookmark' id="${bookmark.id}">
-  //   <p><button class="expand-button" type="button">Expand</button>
-  //   <button class="delete-button" type="button">Delete</button></p><br>
-  //   <h3>Title: ${bookmark.title} <br>
-  //   Rating: ${bookmark.rating} <br>
-  //   </h3>
-  //   <h4>Click here to see more</h4>
-  //   <button id="click" type="button">Click</button>
-  //   <section class="extra" style="display: none">
-  //   <span>Description: ${bookmark.desc}</span><br>
-  //   <span>URL: <a href="https://${bookmark.url}">Visit Site</a></span>
-  //   </section>
-  //    </li>`;
-  // }
+
 
   function testClick() {
     $('#click').on('click',  function() {
@@ -118,7 +104,8 @@ const bookmarks = (function() {
 
   function renderBookmark(bookmark){
     
-    if (bookmark.hiddenDescription === true){
+  
+    if (!bookmark.hiddenDescription){
       return `<li class='new-bookmark' id="${bookmark.id}">
         <p><button class="expand-button" type="button">Expand</button>
         <button class="delete-button" type="button">Delete</button></p><br>
@@ -126,6 +113,7 @@ const bookmarks = (function() {
         Rating: ${bookmark.rating} <br></h3>
         </li>`;
     } else {
+      console.log(bookmark.hiddenDescription);
       return `<li class='new-bookmark' id="${bookmark.id}">
       <p><button class="expand-button" type="button">Expand</button>
       <button class="delete-button" type="button">Delete</button></p><br>
@@ -135,6 +123,7 @@ const bookmarks = (function() {
       URL: <a href="https://${bookmark.url}">Visit Site</a></h3>
        </li>`;
     }
+    
   }
 
   function handleFilter(){
@@ -179,26 +168,7 @@ const bookmarks = (function() {
     });
   }
         
-        
-  // function expandBookmark() {
-  //   //This function will show full description and url of bookmark when clicked.
-  //   //render();
-  //   //will remove the hidden class from description and URL
-  //   $('li').on('click', '.expand-button', function(event){
-  //     const id =  $(event.currentTarget).closest('li').attr('id');
-  //     console.log(id);
-  //     event.preventDefault();            
-  //     console.log('expand button works');
-  //     toggleHiddenDescription(id);
-  //     renderBookmarkList();
-  //     console.log(STORE.hideDescription);
-                
-  //   });
 
-
-        
-  // }
-        
   function toggleHiddenDescription(){
     
     if (STORE.hideDescription === true){
@@ -216,7 +186,7 @@ const bookmarks = (function() {
       console.log(id);
    
       api.deleteItem(id)
-        //.then(res => res.json())
+        
         .then(data => {
           STORE.bookmarkList = STORE.bookmarkList.filter((bookmark)=> bookmark.id !== id);
           renderBookmarkList();});
@@ -224,24 +194,7 @@ const bookmarks = (function() {
   }
 
   function newExpandBookmark(){
-    // $('.new-bookmark').on('click', '.expand-button', function(event){
-    //   event.preventDefault(); 
-    //   const element = $(event.currentTarget).closest('li');
-    //   console.log(element);
-    //   $('span').parent('.extra').toggle('slow');
-    //   // let id =  element.attr('id');
-    //   // let fullBookmark = STORE.bookmarkList.find(element => element.id === id);
-    //   // // console.log(fullBookmark);
-    //   // fullBookmark.hiddenDescription = !fullBookmark.hiddenDescription;
-    //   // if (fullBookmark.hiddenDescription === false){
-    //   //   fullBookmark.find('span').removeClass('hidden');
-    //   // }
-    //   // console.log(fullBookmark.hiddenDescription);
-    //   // console.log(id);
-                 
-    //   console.log('expand button works');
-    //   toggleHiddenDescription();
-    //   renderBookmarkList();
+
     $('li').on('click', '.expand-button', function(event){
       const id =  $(event.currentTarget).closest('li').attr('id');
       let fullBookmark = STORE.findByID(id);
@@ -267,7 +220,7 @@ const bookmarks = (function() {
     handleDeleteBookmark();
     handleAddBookmarkClick();
     handleFilter();
-    // expandBookmark();
+    
     captureBookmark();
     newExpandBookmark();
     testClick();
