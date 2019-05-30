@@ -117,7 +117,8 @@ const bookmarks = (function() {
 
 
   function renderBookmark(bookmark){
-    if (STORE.hideURL === true){
+    
+    if (bookmark.hiddenDescription === true){
       return `<li class='new-bookmark' id="${bookmark.id}">
         <p><button class="expand-button" type="button">Expand</button>
         <button class="delete-button" type="button">Delete</button></p><br>
@@ -126,15 +127,13 @@ const bookmarks = (function() {
         </li>`;
     } else {
       return `<li class='new-bookmark' id="${bookmark.id}">
-    <p><button class="expand-button" type="button">Expand</button>
-    <button class="delete-button" type="button">Delete</button></p><br>
-    <h3>Title: ${bookmark.title} <br>
-    Rating: ${bookmark.rating} <br></h3>
-    <section class="extra">
-    <h4>Description: ${bookmark.desc}<br>
-    URL: <a href="https://${bookmark.url}">Visit Site</a></h4>
-    </section>
-     </li>`;
+      <p><button class="expand-button" type="button">Expand</button>
+      <button class="delete-button" type="button">Delete</button></p><br>
+      <h3>Title: ${bookmark.title} <br>
+      Rating: ${bookmark.rating} <br>
+      Description: ${bookmark.desc}<br>
+      URL: <a href="https://${bookmark.url}">Visit Site</a></h3>
+       </li>`;
     }
   }
 
@@ -201,8 +200,7 @@ const bookmarks = (function() {
   // }
         
   function toggleHiddenDescription(){
-    STORE.hideDescription = !STORE.hideDescription;
-    STORE.hideURL = !STORE.hideURL;
+    
     if (STORE.hideDescription === true){
       $('#full-description').addClass('.hidden');
       console.log('remove class works');
@@ -246,12 +244,15 @@ const bookmarks = (function() {
     //   renderBookmarkList();
     $('li').on('click', '.expand-button', function(event){
       const id =  $(event.currentTarget).closest('li').attr('id');
-      console.log(id);
+      let fullBookmark = STORE.findByID(id);
+      fullBookmark.hiddenDescription = !fullBookmark.hiddenDescription;
+      console.log(fullBookmark);
+      console.log(fullBookmark.hiddenDescription);
       event.preventDefault();            
       console.log('expand button works');
-      toggleHiddenDescription(id);
+      toggleHiddenDescription();
       renderBookmarkList();
-      console.log(STORE.hideDescription);
+      
     });
   }
       
