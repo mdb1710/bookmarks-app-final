@@ -1,20 +1,25 @@
 body{
-    background: #e6f5ff;
+    background: #533B4D;
     font-family: 'KoHo', sans-serif;
-    color: #404a63;
+    color: #FAE3C6;
 }
 
 h1{
     text-align: center;
 }
 
+
 form{
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
     text-align: center;
-    background: #9692af;
+    background: #2B1E28;
     border: 1px solid;
     padding: 10px;
     box-shadow: 4px 4px #615f8a;
     border-radius: 10px;
+    width: 70%;
 }
 
 .stars-options {
@@ -37,10 +42,11 @@ form{
     border: 1px solid ;
     list-style: none;
     border-radius: 10px;
-    background-color: rgb(206, 237, 240);
-    margin: 10px;
+    background-color: #2B1E28; 
+    margin: auto;
     box-shadow: 5px 5px rgb(185, 215, 218);
     line-height: 1.8;
+    width: 60%;
     
 }
 
@@ -53,25 +59,48 @@ form{
     box-sizing: border-box;
     text-decoration: none;
     font-weight:400;
-    color:rgb(62, 85, 119);
-    background-color:#acdbdf;
+    color: rgb(8, 7, 7);
+    background-color: #C1ABA6;
     box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
     text-align:center;
     position:relative;
     /* float: left; */
     display: block;
-    width: 100%;  
+    width: 100%; 
+    font-size: 15px; 
 }
 
+.add-bookmark {
+    width: 60%;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.expand-button {
+    margin: auto;
+    width: 60%;
+    margin-bottom: 5px;
+}
+
+.delete-button {
+    margin: auto;
+    width: 60%;
+    margin-bottom: 5px;
+}
 
 .filter-rating{
     border: 1px, solid, #2d0786;
+    width: 70%;
+    margin: auto;
+    font-size: 15px;
+
     
 }
 
 .error {
     display: block;
-    color: red;
+    color: whitesmoke;
     font-size: 2em;
     background-color: rgba(223, 104, 104, 0.596);
     text-align: center;
@@ -88,11 +117,11 @@ form{
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
    
-   .expand-button, .delete-button, .add-bookmark, .js-bookmark-submit, .clear-button, {
+   .expand-button, .delete-button, .add-bookmark, .js-bookmark-submit, .clear-button {
        text-align: center;
-       position:relative;
+       /* position: relative;
        /* float: left; */
-       display: block;
-       width: 100%;
+       /* display: block;
+       width: 100%; */ 
     }
 }
